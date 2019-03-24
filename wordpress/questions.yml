@@ -1,5 +1,6 @@
 categories:
-- Blog
+- S3WaaS
+- Dist
 - CMS
 questions:
 - variable: defaultImage
@@ -11,13 +12,13 @@ questions:
   group: "Container Images"
   subquestions:
   - variable: image.repository
-    default: "bitnami/wordpress"
-    description: "WordPress image name"
+    default: "registry.s3waas.gov.in:5000/s3waas-dist-app-vol"
+    description: "S3WaaS District application image name"
     type: string
-    label: WordPress Image Name
+    label: Image name
   - variable: image.tag
-    default: "4.9.8-debian-9"
-    description: "WordPress image tag"
+    default: "5.0.0"
+    description: "S3WaaS District application image name"
     type: string
     label: Image Tag
   - variable: mariadb.image.repository
@@ -26,10 +27,118 @@ questions:
     type: string
     label: MariaDB Image Name
   - variable: mariadb.image.tag
-    default: "10.1.35-debian-9"
+    default: "10.2-debian-9"
     description: "MariaDB image tag"
     type: string
     label: MariaDB Image Tag
+
+- variable: appTitle
+  default: "District Website"
+  description: "District Website Title"
+  type: string
+  required: true
+  label: Website Title
+  group: "District Application Settings"
+- variable: appAdminUsername
+  default: "s3waas"
+  description: "District application administrator Username"
+  type: string
+  required: true
+  label: Admin Username
+  group: "District Application Settings"
+- variable: appAdminPassword
+  default: ""
+  description: "Password will be auto-generated if not specified"
+  type: password
+  label: Admin Password
+  group: "District Application Settings"
+- variable: appAdminEmail
+  default: "s3waas.support@gov.in"
+  description: "Admin email"
+  label: Admin email
+  type: string
+  required: true
+  group: "District Application Settings"
+- variable: appMasterURL
+  default: "preview.s3waas.gov.in"
+  label: Golden Image URL
+  type: string
+  required: true
+  description: "Preview(Golden) Image URL of S3WaaS District Application"
+  group: "District Application Settings"
+- variable: appLanguageName
+  default: "Hindi"
+  label: Language Name
+  type: string
+  required: true
+  description: "District Application language human readable name"
+  group: "District Application Settings"
+- variable: applicationLanguageCode
+  default: "hi"
+  label: Language Code
+  type: string
+  required: true
+  description: "State Application language code to be used in URL"
+  group: "State Application Settings"
+- variable: applicationLanguageLocale
+  default: "hi_IN"
+  label: Language Locale
+  type: string
+  required: true
+  description: "State Application language locale as per I18n standards"
+  group: "State Application Settings"
+- variable: applicationThemeName
+  default: "SDO Theme"
+  label: Theme Name
+  type: string
+  required: true
+  description: "State Application theme code, If you wan to choose theme 1 use State-theme-1"
+  group: "State Application Settings"
+- variable: applicationStagingURL
+  label: Staging URL
+  type: string
+  required: true
+  description: "State Application random generated url with s3waas.gov.in TLD"
+  group: "State Application Settings"
+- variable: applicationAlias
+  default: "https://state.nic.in"
+  label: State Website URL
+  type: string
+  required: true
+  description: "State Application URL on which it would be publicly available"
+  group: "State Application Settings"
+- variable: applicationLive
+  default: "false"
+  label: Make Live
+  type: boolean
+  description: "Application settings for sites that are being made Live with State URL"
+  group: "State Application Settings"
+- variable: applicationHTTPS
+  default: "false"
+  label: Application running on HTTPS
+  type: boolean
+  description: "Application HTTPS settings"
+  group: "State Application Settings"
+- variable: persistence.enabled
+  default: false
+  description: "Enable persistent volume for S3WaaS State Application"
+  type: boolean
+  required: true
+  label: WordPress Persistent Volume Enabled
+  show_subquestion_if: true
+  group: "State Application Settings"
+  subquestions:
+  - variable: persistence.size
+    default: "2Gi"
+    description: "WordPress Persistent Volume Size"
+    type: string
+    label: WordPress Volume Size
+  - variable: persistence.storageClass
+    default: ""
+    description: "If undefined or null, uses the default StorageClass. Default to null"
+    type: storageclass
+    label: Default StorageClass for S3WaaS State Application
+
 - variable: wordpressUsername
   default: "user"
   description: "User of the application"
@@ -50,6 +159,37 @@ questions:
   required: true
   label: WordPress Admin Email
   group: "WordPress Settings"
+
+- variable: applicationS3UploadsBucket
+  default: ""
+  label: S3 Bucket
+  type: string
+  required: true
+  description: "State Application Object Storage Bucket name"
+  group: "Object Storage"
+- variable: applicationS3UploadsRegion
+  default: "us-east-1"
+  label: S3 Region
+  type: string
+  required: true
+  description: "State Application S3 Uploads bucket region"
+  group: "Object Storage"
+- variable: applicationS3UploadsEndpoint
+  default: "http://10.43.155.33:7480"
+  label: S3 URL
+  type: string
+  required: true
+  description: "State Application S3 URL endpoint"
+  group: "Object Storage"
+- variable: applicationS3UploadsCDNURL
+  default: "http://10.43.155.33:7480"
+  label: S3 CDN
+  type: string
+  required: true
+  description: "State Application S3 uploads CDN URL (Akamai)"
+  group: "Object Storage"
+
+
 - variable: mariadb.enabled
   default: true
   description: "Deploy a database server as part of this deployment, or set to false and configure an external database connection."
