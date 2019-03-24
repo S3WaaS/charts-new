@@ -73,52 +73,52 @@ questions:
   required: true
   description: "District Application language human readable name"
   group: "District Application Settings"
-- variable: applicationLanguageCode
+- variable: appLanguageCode
   default: "hi"
   label: Language Code
   type: string
   required: true
   description: "State Application language code to be used in URL"
   group: "State Application Settings"
-- variable: applicationLanguageLocale
+- variable: appLanguageLocale
   default: "hi_IN"
   label: Language Locale
   type: string
   required: true
   description: "State Application language locale as per I18n standards"
   group: "State Application Settings"
-- variable: applicationThemeName
+- variable: appThemeName
   default: "district-theme-1"
   label: Theme Name
   type: string
   required: true
   description: "State Application theme code, If you wan to choose theme 1 use State-theme-1"
   group: "State Application Settings"
-- variable: applicationStagingURL
+- variable: appStagingURL
   label: Staging URL
   type: string
   required: true
   description: "State Application random generated url with s3waas.gov.in TLD"
   group: "State Application Settings"
-- variable: applicationAlias
-  default: "https://state.nic.in"
-  label: State Website URL
+- variable: appAliasURL
+  default: "https://dist.nic.in"
+  label: District Website URL
   type: string
   required: true
-  description: "State Application URL on which it would be publicly available"
-  group: "State Application Settings"
-- variable: applicationLive
+  description: "District Application URL on which it would be publicly available"
+  group: "District Application Settings"
+- variable: appLive
   default: "false"
-  label: Make Live
+  label: Make Site Live
   type: boolean
   description: "Application settings for sites that are being made Live with State URL"
-  group: "State Application Settings"
-- variable: applicationHTTPS
+  group: "District Application Settings"
+- variable: appHTTPS
   default: "false"
   label: Application running on HTTPS
   type: boolean
   description: "Application HTTPS settings"
-  group: "State Application Settings"
+  group: "District Application Settings"
 - variable: persistence.enabled
   default: false
   description: "Enable persistent volume for S3WaaS State Application"
@@ -126,7 +126,7 @@ questions:
   required: true
   label: WordPress Persistent Volume Enabled
   show_subquestion_if: true
-  group: "State Application Settings"
+  group: "District Application Settings"
   subquestions:
   - variable: persistence.size
     default: "2Gi"
@@ -139,56 +139,34 @@ questions:
     type: storageclass
     label: Default StorageClass for S3WaaS State Application
 
-- variable: wordpressUsername
-  default: "user"
-  description: "User of the application"
-  type: string
-  required: true
-  label: WordPress Usernname
-  group: "WordPress Settings"
-- variable: wordpressPassword
-  default: ""
-  description: "password will be auto-generated if not specified"
-  type: password
-  label: WordPress Password
-  group: "WordPress Settings"
-- variable: wordpressEmail
-  default: "user@example.com"
-  description: "Admin email"
-  type: string
-  required: true
-  label: WordPress Admin Email
-  group: "WordPress Settings"
-
-- variable: applicationS3UploadsBucket
+- variable: appS3UploadsBucket
   default: ""
   label: S3 Bucket
   type: string
   required: true
   description: "State Application Object Storage Bucket name"
   group: "Object Storage"
-- variable: applicationS3UploadsRegion
+- variable: appS3UploadsRegion
   default: "us-east-1"
   label: S3 Region
   type: string
   required: true
   description: "State Application S3 Uploads bucket region"
   group: "Object Storage"
-- variable: applicationS3UploadsEndpoint
+- variable: appS3UploadsEndpoint
   default: "http://10.43.155.33:7480"
   label: S3 URL
   type: string
   required: true
   description: "State Application S3 URL endpoint"
   group: "Object Storage"
-- variable: applicationS3UploadsCDNURL
+- variable: appS3UploadsCDNURL
   default: "http://10.43.155.33:7480"
   label: S3 CDN
   type: string
   required: true
   description: "State Application S3 uploads CDN URL (Akamai)"
   group: "Object Storage"
-
 
 - variable: mariadb.enabled
   default: true
@@ -200,12 +178,12 @@ questions:
   group: "Database Settings"
   subquestions:
   - variable: mariadb.db.name
-    default: "wordpress"
+    default: "s3waas_dist_app_db"
     description: "Database name to create"
     type: string
     label: MariaDB Database
   - variable: mariadb.db.user
-    default: "wordpress"
+    default: "s3waas"
     description: "Database user to create"
     type: string
     label: MariaDB User
@@ -260,7 +238,7 @@ questions:
   group: "Database Settings"
   subquestions:
   - variable: mariadb.master.persistence.size
-    default: "8Gi"
+    default: "2Gi"
     description: "MariaDB Persistent Volume Size"
     type: string
     label: MariaDB Volume Size
@@ -274,25 +252,6 @@ questions:
     description: "If not empty, uses the specified existing PVC instead of creating new one"
     type: string
     label: Existing Persistent Volume Claim for MariaDB
-- variable: persistence.enabled
-  default: false
-  description: "Enable persistent volume for WordPress"
-  type: boolean
-  required: true
-  label: WordPress Persistent Volume Enabled
-  show_subquestion_if: true
-  group: "WordPress Settings"
-  subquestions:
-  - variable: persistence.size
-    default: "10Gi"
-    description: "WordPress Persistent Volume Size"
-    type: string
-    label: WordPress Volume Size
-  - variable: persistence.storageClass
-    default: ""
-    description: "If undefined or null, uses the default StorageClass. Default to null"
-    type: storageclass
-    label: Default StorageClass for WordPress
 - variable: ingress.enabled
   default: true
   description: "Expose app using Layer 7 Load Balancer - ingress"
